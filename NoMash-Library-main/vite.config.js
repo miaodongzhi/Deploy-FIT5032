@@ -15,6 +15,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))  // Sets up an alias for easier imports (e.g., '@' points to the 'src' folder)
     }
   },
-  base: '/<repository-name>/'  // Ensure this matches your GitHub Pages repository name for correct resource loading
+  base: '/Deploy-FIT5032/',  // Ensure this matches your GitHub Pages repository name
 })
+
 
