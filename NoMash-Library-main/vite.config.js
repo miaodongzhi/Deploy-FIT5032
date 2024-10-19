@@ -7,12 +7,14 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
-    vueDevTools(),
+    vue(),  // Enables Vue.js support
+    vueDevTools(),  // Adds Vue DevTools support for debugging in development
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url))  // Sets up an alias for easier imports (e.g., '@' points to the 'src' folder)
     }
-  }
+  },
+  base: '/<repository-name>/'  // Ensure this matches your GitHub Pages repository name for correct resource loading
 })
+
