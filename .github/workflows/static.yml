@@ -1,0 +1,54 @@
+name: Deploy Vue.js project to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]  # 当推送到 main 分支时触发工作流
+  workflow_dispatch:  # 允许从 Actions 面板手动触发
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      # 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # 使用适合 Vue 项目的 Node.js 版本
+
+      # 安装依赖项并构建项目
+      - name: Install dependencies and build
+        run: |
+          cd NoMash-Library-main  # 切换到 Vue 项目目录
+          npm install  # 安装依赖
+          npm run build  # 构建项目
+
+      # 配置 GitHub Pages 环境
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 上传构建产物
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'NoMash-Library-main/dist'  # Vue 项目的构建输出目录
+
+      # 部署到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
